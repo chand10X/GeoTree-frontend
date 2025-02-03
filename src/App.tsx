@@ -13,33 +13,37 @@ import Corporate from './components/Corporate';
 import Education from './components/Education';
 import Events from './components/Events';
 import History from './components/History';
-import Login from './components/auth/Login'; 
+import FloatingPlantButton from './components/FloatingPlantButton';
+import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 flex flex-col">
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Hero />} />
-          <Route path="/plant" element={<PlantationForm />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/green-credits" element={<GreenCredits />} />
-          <Route path="/water-credits" element={<WaterCredits />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/corporate" element={<Corporate />} />
-          <Route path="/education" element={<Education />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/login" element={<Login />} /> {/* Add Login route */}
-          <Route path="/register" element={<Register />} /> {/* Add Register route */}
-        </Routes>
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Hero />} />
+            <Route path="/plant" element={<PlantationForm />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/green-credits" element={<GreenCredits />} />
+            <Route path="/water-credits" element={<WaterCredits />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/corporate" element={<Corporate />} />
+            <Route path="/education" element={<Education />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/history" element={<History />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </main>
+        <FloatingPlantButton />
       </div>
     </Router>
   );
 }
 
-export default App
+export default App;
