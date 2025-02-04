@@ -17,12 +17,30 @@ const mockData = {
     { time: '12pm', value: 98 },
     { time: '2pm', value: 95 },
     { time: '4pm', value: 88 },
-  ]
+  ],
+  waterCredits: [
+    { month: 'Jan', credits: 50 },
+    { month: 'Feb', credits: 60 },
+    { month: 'Mar', credits: 70 },
+    { month: 'Apr', credits: 80 },
+    { month: 'May', credits: 90 },
+  ],
+  greenCredits: [
+    { month: 'Jan', credits: 30 },
+    { month: 'Feb', credits: 40 },
+    { month: 'Mar', credits: 50 },
+    { month: 'Apr', credits: 60 },
+    { month: 'May', credits: 70 },
+  ],
+  rewardPoints: 250, // Added reward points
+  certificatesEarned: 5 // Added certificates earned
 };
 
 const Dashboard = () => {
   const [plantationData, setPlantationData] = useState(mockData.plantations);
   const [aqiData, setAqiData] = useState(mockData.aqi);
+  const [waterCreditData, setWaterCreditData] = useState(mockData.waterCredits);
+  const [greenCreditData, setGreenCreditData] = useState(mockData.greenCredits);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,19 +73,43 @@ const Dashboard = () => {
               icon: <Tree className="h-8 w-8" />,
               title: "Total Trees",
               value: "36",
-              color: "text-green-600"
+              color: "text-green-600",
+              image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80" 
             },
             {
               icon: <Wind className="h-8 w-8" />,
               title: "Air Quality",
               value: "Good",
-              color: "text-blue-600"
+              color: "text-blue-600",
+              image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80" // Add image path
             },
             {
               icon: <Droplets className="h-8 w-8" />,
               title: "Water Credits",
               value: "150",
-              color: "text-cyan-600"
+              color: "text-cyan-600",
+              image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80" // Add image path
+            },
+            {
+              icon: <Droplets className="h-8 w-8" />,
+              title: "Green Credits",
+              value: "70", // Assuming the latest month value for display
+              color: "text-green-600",
+              image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80" // Add image path
+            },
+            {
+              icon: <Droplets className="h-8 w-8" />,
+              title: "Reward Points",
+              value: mockData.rewardPoints.toString(), // Display reward points
+              color: "text-yellow-600",
+              image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80" // Add image path
+            },
+            {
+              icon: <Droplets className="h-8 w-8" />,
+              title: "Certificates Earned",
+              value: mockData.certificatesEarned.toString(), // Display certificates earned
+              color: "text-purple-600",
+              image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80" // Add image path
             }
           ].map((stat, index) => (
             <motion.div
@@ -75,11 +117,14 @@ const Dashboard = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 * index }}
-              className="bg-white p-6 rounded-xl shadow-md"
+              className="bg-white p-6 rounded-xl shadow-md flex justify-between items-center"
             >
               <div className={`${stat.color} mb-4`}>{stat.icon}</div>
-              <h3 className="text-lg font-semibold text-gray-700">{stat.title}</h3>
-              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+              <div className="flex-grow">
+                <h3 className="text-lg font-semibold text-gray-700">{stat.title}</h3>
+                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+              </div>
+              <img src={stat.image} alt={stat.title} className="h-16 w-16 object-cover rounded-full" /> {/* Image on the right */}
             </motion.div>
           ))}
         </motion.div>
@@ -118,6 +163,44 @@ const Dashboard = () => {
                   <YAxis />
                   <Tooltip />
                   <Bar dataKey="value" fill="#2563eb" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="bg-white p-6 rounded-xl shadow-md"
+          >
+            <h3 className="text-xl font-semibold mb-4">Water Credits</h3>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={waterCreditData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="credits" fill="#3b82f6" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="bg-white p-6 rounded-xl shadow-md"
+          >
+            <h3 className="text-xl font-semibold mb-4">Green Credits</h3>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={greenCreditData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="credits" fill="#4ade80" />
                 </BarChart>
               </ResponsiveContainer>
             </div>

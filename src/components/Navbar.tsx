@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { TreePine, Home, LineChart, User, Leaf, Menu, X, History } from 'lucide-react';
+import { Home, LineChart, User, Leaf, Menu, X, History } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import images from '../Public/assets/image';
 
 const Navbar = () => {
   const location = useLocation();
@@ -26,12 +27,9 @@ const Navbar = () => {
     <nav className="bg-white shadow-lg relative z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-20">
-          <Link to="/" className="flex items-center space-x-2">
-            <TreePine className="h-8 w-8 text-green-600" />
-            <span className="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-500 text-transparent bg-clip-text">
-              GeoTree
-            </span>
-          </Link>
+          <div className="flex items-center space-x-2">
+            <img src={images.logo} alt="GeoTree Logo" className="h-12 w-15" /> 
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">

@@ -1,119 +1,74 @@
-import React, { useState, } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Lock, User, Eye, EyeOff, Phone } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Phone, CheckCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import GoogleButton from './components/GoogleButton';
-import axios from 'axios';
 
 const Register = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: '',
+    name: '',
     email: '',
     mobile: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '' // Added confirm password field
   });
-  const [formErrors, setFormErrors] = useState({
-    fullName: '',
-    email: '',
-    mobile: '',
-    password: '',
-    confirmPassword: ''
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertType, setAlertType] = useState<'success' | 'error' | null>(null);
-  
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false); // State for modal visibility
+
   const validateForm = () => {
-    const errors: any = {};
+    const newErrors: Record<string, string> = {};
     
-    if (!formData.fullName) {
-      errors.fullName = 'Full name is required';
-    } else if (!/^[a-zA-Z\s]+$/.test(formData.fullName)) {
-      errors.fullName = 'Full name should only contain alphabets';
+    if (!formData.name) {
+      newErrors.name = 'Name is required';
+    } else if (!/^[a-zA-Z\s]+$/.test(formData.name)) {
+      newErrors.name = 'Name should only contain alphabets';
     }
 
     if (!formData.email) {
-      errors.email = 'Email is required';
+      newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = 'Invalid email format';
+      newErrors.email = 'Invalid email format';
     }
 
     if (!formData.mobile) {
-      errors.mobile = 'Mobile number is required';
+      newErrors.mobile = 'Mobile number is required';
     } else if (!/^\d{10}$/.test(formData.mobile)) {
-      errors.mobile = 'Mobile number should be 10 digits';
+      newErrors.mobile = 'Mobile number should be 10 digits';
     }
 
     if (!formData.password) {
-      errors.password = 'Password is required';
+      newErrors.password = 'Password is required';
     } else if (formData.password.length < 8) {
-      errors.password = 'Password must be at least 8 characters';
-    } else if (!/[A-Z]/.test(formData.password)) {
-      errors.password = 'Password must contain at least 1 uppercase letter';
-    } else if (!/[a-z]/.test(formData.password)) {
-      errors.password = 'Password must contain at least 1 lowercase letter';
-    } else if (!/[0-9]/.test(formData.password)) {
-      errors.password = 'Password must include at least 1 numeric digit';
-    } else if (/\s/.test(formData.password)) {
-      errors.password = 'Password should not contain spaces';
+      newErrors.password = 'Password must be at least 8 characters';
     }
 
-    if (formData.password && formData.confirmPassword && formData.password.trim() !== formData.confirmPassword.trim()) {
-      errors.confirmPassword = 'Password and confirm password do not match';
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
     }
 
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
-    setAlertMessage('');
-    setAlertType(null);
-
+    setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/signup', {
-        fullName: formData.fullName,
-        email: formData.email,
-        password: formData.password,
-        confirmPassword: formData.confirmPassword,
-        mobile: formData.mobile
-      });
-
-      setAlertMessage(response.data.message || 'Registration successful!');
-      setAlertType('success');
-      setFormData({
-        fullName: '',
-        email: '',
-        mobile: '',
-        password: '',
-        confirmPassword: ''
-      });
-      setFormErrors({
-        fullName: '',
-        email: '',
-        mobile: '',
-        password: '',
-        confirmPassword: ''
-      });
-
-      // Navigate to login after 3 seconds
+      // Implement registration logic here
+      await new Promise(resolve => setTimeout(resolve, 1500)); // Simulated API call
+      setShowModal(true); // Show success modal
       setTimeout(() => {
         navigate('/login');
-      }, 3000);
-      
-    } catch (error: any) {
-      setAlertMessage(error.response?.data?.message || 'Registration failed');
-      setAlertType('error');
+      }, 2000); // Navigate after 2 seconds
+    } catch (error) {
+      console.error('Registration failed:', error);
     } finally {
-      setIsSubmitting(false);
+      setIsLoading(false);
     }
   };
 
@@ -139,19 +94,19 @@ const Register = () => {
                 <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <input
                   type="text"
-                  value={formData.fullName}
+                  value={formData.name}
                   onChange={(e) => {
                     const value = e.target.value.replace(/[^a-zA-Z\s]/g, '');
-                    setFormData({ ...formData, fullName: value });
+                    setFormData({ ...formData, name: value });
                   }}
                   className={`w-full pl-10 pr-4 py-2 border ${
-                    formErrors.fullName ? 'border-red-500' : 'border-gray-300'
+                    errors.name ? 'border-red-500' : 'border-gray-300'
                   } rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent`}
-                  placeholder="Enter your full name"
+                  placeholder="Enter your name"
                 />
               </div>
-              {formErrors.fullName && (
-                <p className="mt-1 text-sm text-red-500">{formErrors.fullName}</p>
+              {errors.name && (
+                <p className="mt-1 text-sm text-red-500">{errors.name}</p>
               )}
             </div>
 
@@ -166,13 +121,13 @@ const Register = () => {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className={`w-full pl-10 pr-4 py-2 border ${
-                    formErrors.email ? 'border-red-500' : 'border-gray-300'
+                    errors.email ? 'border-red-500' : 'border-gray-300'
                   } rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent`}
                   placeholder="Enter your email"
                 />
               </div>
-              {formErrors.email && (
-                <p className="mt-1 text-sm text-red-500">{formErrors.email}</p>
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-500">{errors.email}</p>
               )}
             </div>
 
@@ -190,14 +145,14 @@ const Register = () => {
                     setFormData({ ...formData, mobile: value });
                   }}
                   className={`w-full pl-10 pr-4 py-2 border ${
-                    formErrors.mobile ? 'border-red-500' : 'border-gray-300'
+                    errors.mobile ? 'border-red-500' : 'border-gray-300'
                   } rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent`}
                   placeholder="Enter your mobile number"
                   maxLength={10}
                 />
               </div>
-              {formErrors.mobile && (
-                <p className="mt-1 text-sm text-red-500">{formErrors.mobile}</p>
+              {errors.mobile && (
+                <p className="mt-1 text-sm text-red-500">{errors.mobile}</p>
               )}
             </div>
 
@@ -212,7 +167,7 @@ const Register = () => {
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   className={`w-full pl-10 pr-12 py-2 border ${
-                    formErrors.password ? 'border-red-500' : 'border-gray-300'
+                    errors.password ? 'border-red-500' : 'border-gray-300'
                   } rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent`}
                   placeholder="Create a password"
                 />
@@ -228,8 +183,8 @@ const Register = () => {
                   )}
                 </button>
               </div>
-              {formErrors.password && (
-                <p className="mt-1 text-sm text-red-500">{formErrors.password}</p>
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-500">{errors.password}</p>
               )}
             </div>
 
@@ -240,41 +195,30 @@ const Register = () => {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <input
-                  type={showConfirmPassword ? 'text' : 'password'}
+                  type={showPassword ? 'text' : 'password'}
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                   className={`w-full pl-10 pr-12 py-2 border ${
-                    formErrors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
                   } rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent`}
                   placeholder="Confirm your password"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5" />
-                  ) : (
-                    <Eye className="h-5 w-5" />
-                  )}
-                </button>
               </div>
-              {formErrors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-500">{formErrors.confirmPassword}</p>
+              {errors.confirmPassword && (
+                <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>
               )}
             </div>
 
             <motion.button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isLoading}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className={`w-full py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all ${
-                isSubmitting ? 'opacity-75 cursor-not-allowed' : ''
+                isLoading ? 'opacity-75 cursor-not-allowed' : ''
               }`}
             >
-              {isSubmitting ? (
+              {isLoading ? (
                 <div className="flex items-center justify-center">
                   <div className="w-5 h-5 border-t-2 border-b-2 border-white rounded-full animate-spin mr-2"></div>
                   Creating account...
@@ -306,6 +250,23 @@ const Register = () => {
             </p>
           </form>
         </motion.div>
+
+        {/* Success Modal */}
+        {showModal && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+              <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold">Account Created Successfully!</h3>
+              <p className="text-gray-600 mt-2">You can now log in to your account.</p>
+              <button
+                onClick={() => setShowModal(false)}
+                className="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
