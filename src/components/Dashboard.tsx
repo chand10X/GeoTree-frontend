@@ -50,8 +50,11 @@ const Dashboard = () => {
         const plantationResult = await plantationResponse.json();
         const aqiResult = await aqiResponse.json();
         
-        setPlantationData(plantationResult);
-        setAqiData(aqiResult);
+        // Set data from API or fallback to mock data
+        setPlantationData(plantationResult.length ? plantationResult : mockData.plantations);
+        setAqiData(aqiResult.length ? aqiResult : mockData.aqi);
+        setWaterCreditData(mockData.waterCredits); // Keep using mock data for water credits
+        setGreenCreditData(mockData.greenCredits); // Keep using mock data for green credits
       } catch (error) {
         console.error('Failed to fetch data:', error);
       }
@@ -72,28 +75,28 @@ const Dashboard = () => {
             {
               icon: <Tree className="h-8 w-8" />,
               title: "Total Trees",
-              value: "36",
+              value: plantationData.reduce((acc, curr) => acc + curr.trees, 0).toString(), // Calculate total trees
               color: "text-green-600",
               image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80" 
             },
             {
               icon: <Wind className="h-8 w-8" />,
               title: "Air Quality",
-              value: "Good",
+              value: aqiData[aqiData.length - 1]?.value.toString() || "N/A", // Latest AQI value
               color: "text-blue-600",
               image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80" // Add image path
             },
             {
               icon: <Droplets className="h-8 w-8" />,
               title: "Water Credits",
-              value: "150",
+              value: mockData.waterCredits[mockData.waterCredits.length - 1].credits.toString(), // Latest water credits
               color: "text-cyan-600",
               image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80" // Add image path
             },
             {
               icon: <Droplets className="h-8 w-8" />,
               title: "Green Credits",
-              value: "70", // Assuming the latest month value for display
+              value: mockData.greenCredits[mockData.greenCredits.length - 1].credits.toString(), // Latest green credits
               color: "text-green-600",
               image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80" // Add image path
             },

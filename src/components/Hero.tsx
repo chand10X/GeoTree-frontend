@@ -189,15 +189,20 @@ const Hero = () => {
       </div>
 
       {/* Credit Programs Section */}
-      <div className="py-20 bg-gradient-to-br from-green-900 to-emerald-800 text-white">
-        <div className="container mx-auto px-4">
+      <div className="py-20 relative bg-gray-800">
+        <img 
+          src={images.Forest} 
+          alt="Forest Background" 
+          className="absolute inset-0 w-full h-full object-cover opacity-50"
+        />
+        <div className="container mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             className="text-center mb-16"
           >
             <h2 className="text-3xl font-bold mb-4">Our Credit Programs</h2>
-            <p className="text-green-100 max-w-2xl mx-auto">
+            <p className="font-bold  max-w-2xl mx-auto">
               Earn credits for your environmental contributions and be part of the solution.
             </p>
           </motion.div>
@@ -206,7 +211,7 @@ const Hero = () => {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              className="bg-white/10 p-8 rounded-xl backdrop-blur-sm"
+              className="bg-white p-8 rounded-xl" 
             >
               <Award className="h-12 w-12 text-green-300 mb-4" />
               <h3 className="text-2xl font-bold mb-4">Green Credits</h3>
@@ -236,7 +241,7 @@ const Hero = () => {
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              className="bg-white/10 p-8 rounded-xl backdrop-blur-sm"
+              className="bg-white p-8 rounded-xl" 
             >
               <Droplets className="h-12 w-12 text-blue-300 mb-4" />
               <h3 className="text-2xl font-bold mb-4">Water Credits</h3>
@@ -266,66 +271,8 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Tree Benefits Section */}
-      <div className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl font-bold mb-4">Benefits of Your Tree</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              When you plant a tree with GeoTree, you're not just growing a plant – you're creating a legacy of environmental impact.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                title: "Carbon Absorption",
-                value: "21.6 kg",
-                description: "CO2 absorbed per year",
-                icon: <Wind className="h-6 w-6" />
-              },
-              {
-                title: "Oxygen Generation",
-                value: "118 kg",
-                description: "Oxygen produced per year",
-                icon: <Leaf className="h-6 w-6" />
-              },
-              {
-                title: "Soil Conservation",
-                value: "2.5 tons",
-                description: "Soil preserved per year",
-                icon: <Globe className="h-6 w-6" />
-              },
-              {
-                title: "Water Conservation",
-                value: "4,000 L",
-                description: "Water conserved per year",
-                icon: <Droplets className="h-6 w-6" />
-              }
-            ].map((benefit, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * index }}
-                className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl shadow-md cursor-pointer hover:shadow-xl transition-shadow"
-              >
-                <div className="text-green-600 mb-3">{benefit.icon}</div>
-                <h3 className="text-lg font-semibold mb-1">{benefit.title}</h3>
-                <div className="text-2xl font-bold text-green-600 mb-1">{benefit.value}</div>
-                <p className="text-sm text-gray-600">{benefit.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-      
-      {/* Programs Section */}
-      <div className="py-20 bg-white">
+       {/* Programs Section */}
+       <div className="py-20 bg-white">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0 }}
@@ -390,27 +337,32 @@ const Hero = () => {
       </div>
 
       {/* Impact Section */}
-      <div className="py-20 bg-gradient-to-br from-blue-800 to-teal-600 text-white">
-        <div className="container mx-auto px-4">
+      <div className="py-20 relative bg-gray-800">
+        <img 
+          src={images.Enviornmenteffect} 
+          alt="Environmental Effect" 
+          className="absolute inset-0 w-full h-full object-cover opacity-10"
+        />
+        <div className="relative z-10 container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               className="space-y-6"
             >
-              <h2 className="text-3xl font-bold">Our Environmental Impact</h2>
-              <p className="text-blue-200">
+              <h2 className="text-3xl font-bold text-green-100">Our Environmental Impact</h2>
+              <p className="text-green-200">
                 Through our collective efforts, we've made significant strides in environmental conservation
                 and community engagement. Every tree planted contributes to a healthier planet.
               </p>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white/20 p-4 rounded-lg backdrop-blur-sm">
-                  <div className="text-3xl font-bold">10K+</div>
-                  <div className="text-blue-300">Trees Planted</div>
+                <div className="bg-green-600/20 p-4 rounded-lg backdrop-blur-sm">
+                  <div className="text-3xl font-bold text-white">10K+</div>
+                  <div className="text-green-300">Trees Planted</div>
                 </div>
-                <div className="bg-white/20 p-4 rounded-lg backdrop-blur-sm">
-                  <div className="text-3xl font-bold">5K+</div>
-                  <div className="text-blue-300">Active Users</div>
+                <div className="bg-green-600/20 p-4 rounded-lg backdrop-blur-sm">
+                  <div className="text-3xl font-bold text-white">5K+</div>
+                  <div className="text-green-300">Active Users</div>
                 </div>
               </div>
             </motion.div>
@@ -420,7 +372,7 @@ const Hero = () => {
               className="relative h-80 rounded-xl overflow-hidden"
             >
               <img 
-                src={images.impact} // Updated to use imported image
+                src={images.impact} 
                 alt="Tree planting" 
                 className="w-full h-full object-cover rounded-xl transition-transform duration-300 hover:scale-105"
               />
@@ -459,23 +411,7 @@ const Hero = () => {
           </motion.div>
         </div>
       </div>
-      <style>
-        {`
-          .swiper-container {
-            overflow: hidden;
-          }
-          .swiper-wrapper {
-            display: flex;
-            transition: transform 0.5s ease;
-          }
-          .swiper-slide {
-            transition: transform 0.5s ease;
-          }
-          .swiper-slide-active {
-            transform: scale(1.1);
-          }
-        `}
-      </style>
+     
 
       {/* Footer Section */}
       <Footer />

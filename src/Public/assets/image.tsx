@@ -14,6 +14,8 @@ import before1 from './Images/sliderimages/1.webp'
 import before2 from './Images/sliderimages/2.webp'
 import before3 from './Images/sliderimages/3.webp'
 import before4 from './Images/sliderimages/4.webp'
+import Enviornmenteffect from './Images/Enviroment effect.png'
+import Forest from './Images/Forest.png'
 
 const images: { [key: string]: string } = {
   logo,
@@ -32,6 +34,8 @@ const images: { [key: string]: string } = {
   before2,
   before3,
   before4,
+  Enviornmenteffect,
+  Forest,
  };
 
 export default images;

@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, Trees as Tree, Check, Camera, X, MapPin, Leaf, Heart, Sparkles, Zap } from 'lucide-react';
+import { Trees as Tree, Check, Camera, X, MapPin, Leaf, Heart, Sparkles, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { publicIp } from 'public-ip';
 import axios from 'axios'; // Import axios for API calls
 
 // Add new interfaces for enhanced features
-interface PlantationSite {
-  id: string;
-  name: string;
-  state: string;
-  description: string;
-  price: number;
-  image: string;
-}
 
 interface TreeCategory {
   id: string;
@@ -33,42 +25,11 @@ interface FormData {
   userMobile: string;
   userIp: string;
   userLocation: string;
+  latitude: string;
+  longitude: string;
+  district: string;
+  gpName: string;
 }
-
-const plantationSites: PlantationSite[] = [
-  {
-    id: 'jharkhand',
-    name: 'Project Hariyar Jharkhand',
-    state: 'Jharkhand',
-    description: 'Support urban and industrial area greening initiatives',
-    price: 175,
-    image: 'https://images.unsplash.com/photo-1572179091449-7a8ef7703df9?auto=format&fit=crop&q=80'
-  },
-  {
-    id: 'himachal',
-    name: 'Project Harit Himachal',
-    state: 'Himachal Pradesh',
-    description: 'Mountain ecosystem restoration project',
-    price: 175,
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80'
-  },
-  {
-    id: 'karnataka',
-    name: 'Project Hasiru Sankalpa',
-    state: 'Karnataka',
-    description: 'Drought mitigation through tree plantation',
-    price: 175,
-    image: 'https://images.unsplash.com/photo-1565118531796-763e5082d113?auto=format&fit=crop&q=80'
-  },
-  {
-    id: 'bihar',
-    name: 'Project Harit Bihar',
-    state: 'Bihar',
-    description: 'Large-scale reforestation initiative',
-    price: 149,
-    image: 'https://images.unsplash.com/photo-1569880153113-76e33fc52d5f?auto=format&fit=crop&q=80'
-  }
-];
 
 const treeCategories: TreeCategory[] = [
   {
@@ -130,7 +91,11 @@ const PlantationForm = () => {
     userName: '',
     userMobile: '',
     userIp: '',
-    userLocation: ''
+    userLocation: '',
+    latitude: '',
+    longitude: '',
+    district: '',
+    gpName: ''
   });
 
   const [errors, setErrors] = useState<Partial<FormData>>({});
@@ -162,21 +127,32 @@ const PlantationForm = () => {
           navigator.geolocation.getCurrentPosition(
             (position) => {
               const { latitude, longitude } = position.coords;
-              setFormData(prev => ({ ...prev, userLocation: `${latitude}, ${longitude}` }));
+              setFormData(prev => ({
+                ...prev,
+                userLocation: `${latitude}, ${longitude}`,
+                latitude: latitude.toString(),
+                longitude: longitude.toString(),
+                district: 'District Name', // Replace with actual district fetching logic
+                gpName: 'GP Name' // Replace with actual GP name fetching logic
+              }));
             },
             (error) => {
               console.error('Error getting location:', error);
+              alert('Location permission is required to use this form.');
+              navigate('/'); // Redirect or handle as needed
             }
           );
         } else {
           console.error('Geolocation is not supported by this browser.');
+          alert('Geolocation is not supported by this browser.');
+          navigate('/'); // Redirect or handle as needed
         }
       } catch (error) {
         console.error('Failed to fetch IP:', error);
       }
     };
     fetchIpAndLocation();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     if (formData.userMobile.length === 10) {
@@ -264,6 +240,10 @@ const PlantationForm = () => {
       formDataToSend.append('userMobile', formData.userMobile);
       formDataToSend.append('userIp', formData.userIp);
       formDataToSend.append('userLocation', formData.userLocation);
+      formDataToSend.append('latitude', formData.latitude);
+      formDataToSend.append('longitude', formData.longitude);
+      formDataToSend.append('district', formData.district);
+      formDataToSend.append('gpName', formData.gpName);
 
       // Send data to the API
       await axios.post('YOUR_API_ENDPOINT', formDataToSend, {
@@ -562,46 +542,6 @@ const PlantationForm = () => {
             </motion.button>
           </form>
         </motion.div> 
-        {/* Plantation Sites */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-12"
-        >
-          <h2 className="text-2xl font-bold text-center mb-6">Select Plantation Site</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {plantationSites.map((site) => (
-              <motion.div
-                key={site.id}
-                whileHover={{ scale: 1.02 }}
-                className={`rounded-xl overflow-hidden shadow-lg ${
-                  selectedSite === site.id ? 'ring-2 ring-green-500' : ''
-                }`}
-              >
-                <div className="relative h-48">
-                  <img
-                    src={site.image}
-                    alt={site.name}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute top-4 right-4 bg-white rounded-full px-3 py-1 text-sm font-semibold">
-                    ₹{site.price}
-                  </div>
-                </div>
-                <div className="p-4 bg-white">
-                  <h3 className="font-semibold text-lg mb-1">{site.name}</h3>
-                  <p className="text-sm text-gray-600 mb-3">{site.description}</p>
-                  <button
-                    onClick={() => setSelectedSite(site.id)}
-                    className="w-full bg-green-500 text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors"
-                  >
-                    Select Site
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
 
         {/* Trending Campaigns */}
         <motion.div

@@ -14,6 +14,7 @@ interface PlantationHistory {
   prePlantationImage: string;
   plantationImage: string;
   location: string;
+  treeCategory: string; // Added treeCategory field
 }
 
 const mockHistory: PlantationHistory[] = [
@@ -28,7 +29,8 @@ const mockHistory: PlantationHistory[] = [
     plantedDate: '2024-03-15',
     prePlantationImage: 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&q=80',
     plantationImage: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80',
-    location: 'City Park, Mumbai'
+    location: 'City Park, Mumbai',
+    treeCategory: 'Memorial Trees' // Example category
   },
   {
     id: '2',
@@ -41,7 +43,8 @@ const mockHistory: PlantationHistory[] = [
     plantedDate: '2024-03-10',
     prePlantationImage: 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&q=80',
     plantationImage: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80',
-    location: 'Village Green, Delhi'
+    location: 'Village Green, Delhi',
+    treeCategory: 'Native Species' // Example category
   }
 ];
 
@@ -132,6 +135,7 @@ const History = () => {
                         {plantation.event && (
                           <p><span className="font-medium">Event:</span> {plantation.event}</p>
                         )}
+                        <p><span className="font-medium">Tree Category:</span> {plantation.treeCategory}</p> {/* Added Tree Category */}
                       </div>
                     </div>
                   </div>

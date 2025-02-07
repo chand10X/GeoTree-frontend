@@ -8,8 +8,8 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center space-x-2 mb-6">
-              <img src={images.logo} alt="GeoTree Logo" className="h-14 w-15" /> 
+            <div className="flex items-center justify-center space-x-2 mb-6 bg-white rounded-lg p-2 h-14 w-15">
+              <img src={images.logo} alt="GeoTree Logo" className="h-full w-98" /> 
             </div>
             <p className="text-gray-400 mb-6">
               Empowering environmental conservation through technology and community engagement.
@@ -84,18 +84,18 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-center space-x-3">
                 <MapPin className="h-5 w-5 text-green-500" />
-                <span className="text-gray-400">123 Green Street, Eco City</span>
+                <span className="text-gray-400">408, IVth Floor, JTM Mall, Jagatpura, Jaipur</span>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-green-500" />
                 <a href="mailto:contact@geotree.com" className="text-gray-400 hover:text-white transition-colors">
-                  contact@geotree.com
+                info@geoplanetsolution.com
                 </a>
               </li>
               <li className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-green-500" />
                 <a href="tel:+1234567890" className="text-gray-400 hover:text-white transition-colors">
-                  +1 (234) 567-890
+                +91-7976528143, +91-8058477387
                 </a>
               </li>
             </ul>
